@@ -22,6 +22,7 @@
                     th:value="${employer.id}"></option>
         </select>
         <a th:href="@{'/employers/add'}">Add Employers</a>
+        <p class="error" th:errors="${job.employer}"></p>
     </div>
 
     <div class="form-group">
