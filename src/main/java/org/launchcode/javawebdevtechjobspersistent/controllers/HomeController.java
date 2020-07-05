@@ -7,7 +7,6 @@ import org.launchcode.javawebdevtechjobspersistent.models.data.EmployerRepositor
 import org.launchcode.javawebdevtechjobspersistent.models.data.JobRepository;
 import org.launchcode.javawebdevtechjobspersistent.models.data.SkillRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.namedparam.EmptySqlParameterSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -63,13 +62,12 @@ public class HomeController {
 
        Optional result = employerRepository.findById(employerId);
 
-
-
         if (result.isPresent()) {
 
             Employer anEmployer = (Employer) result.get();
             newJob.setEmployer(anEmployer);
-
+            List<Skill> skillObjs = (List<Skill>) skillRepository.findAllById(skills);
+            newJob.setSkills(skillObjs);
 
             jobRepository.save(newJob);
         }

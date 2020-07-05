@@ -1,9 +1,11 @@
 package org.launchcode.javawebdevtechjobspersistent.models;
 
-import org.hibernate.annotations.Cascade;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Job extends AbstractEntity {
@@ -11,12 +13,15 @@ public class Job extends AbstractEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Employer employer;
 
-    private String skills;
+    @ManyToMany
+    private List<Skill> skills = new ArrayList<>();
+
+
 
     public Job() {
     }
 
-    public Job(Employer anEmployer, String someSkills) {
+    public Job(Employer anEmployer, List<Skill> someSkills) {
         super();
         this.employer = anEmployer;
         this.skills = someSkills;
@@ -32,11 +37,12 @@ public class Job extends AbstractEntity {
         this.employer = employer;
     }
 
-    public String getSkills() {
+    public List<Skill> getSkills() {
         return skills;
     }
 
-    public void setSkills(String skills) {
+    public void setSkills(List<Skill> skills) {
         this.skills = skills;
     }
+
 }
