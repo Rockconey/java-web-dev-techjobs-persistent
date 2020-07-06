@@ -55,7 +55,7 @@ public class HomeController {
         if (errors.hasErrors()) {
             model.addAttribute("title", "Add Job");
             model.addAttribute(new Job());
-            System.out.println(errors.getAllErrors());
+            model.addAttribute("errors", errors);
             return "add";
         }
 
