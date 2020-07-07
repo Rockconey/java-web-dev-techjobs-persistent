@@ -7,7 +7,6 @@ import java.util.List;
 
 @Entity
 public class Employer extends AbstractEntity {
-//    TODO: Check that you have your Join Column correctly named.
 
     @OneToMany
     @JoinColumn(name = "employer_id")

@@ -42,6 +42,7 @@ public class EmployerController {
 
         if (errors.hasErrors()) {
             model.addAttribute("title", "Add Employer");
+            model.addAttribute("errors", errors);
             return "employers/add";
         }
 
