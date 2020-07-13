@@ -8,20 +8,11 @@
 
 <div class="container body-content">
     <h2>TechJobs</h2>
-
-    <br/>
-
-    <h4 th:name="welcome" th:text="'Welcome ' + ${user.username}"></h4>
-
-    <br/>
-
+    <!--    <h5 th:name="welcome" th:text="${user.name}"></h5>-->
     <ul>
-        <li th:each="job : ${jobs}">
+        <li th:each="job : ${saved}">
             <a th:href="@{'/view/' + ${job.id}}" th:text="${job.name}"></a>
         </li>
     </ul>
 
 </div>
-
-</body>
-</html>

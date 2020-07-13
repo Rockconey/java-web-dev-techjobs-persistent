@@ -3,15 +3,18 @@ package org.launchcode.javawebdevtechjobspersistent.controllers;
 import org.launchcode.javawebdevtechjobspersistent.models.Employer;
 import org.launchcode.javawebdevtechjobspersistent.models.Job;
 import org.launchcode.javawebdevtechjobspersistent.models.Skill;
+import org.launchcode.javawebdevtechjobspersistent.models.User;
 import org.launchcode.javawebdevtechjobspersistent.models.data.EmployerRepository;
 import org.launchcode.javawebdevtechjobspersistent.models.data.JobRepository;
 import org.launchcode.javawebdevtechjobspersistent.models.data.SkillRepository;
+import org.launchcode.javawebdevtechjobspersistent.models.data.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +23,7 @@ import java.util.Optional;
  * Created by LaunchCode
  */
 @Controller
+@RequestMapping
 public class HomeController {
 
     @Autowired
@@ -31,12 +35,36 @@ public class HomeController {
     @Autowired
     private SkillRepository skillRepository;
 
-    @RequestMapping("")
-    public String index(Model model) {
+    @Autowired
+    private UserRepository userRepository;
 
+
+
+    @Autowired
+    private AuthenticationController authenticationController;
+
+
+    @RequestMapping("")
+    public String index(HttpServletRequest request, Model model) {
+        model.addAttribute("jobs", jobRepository.findAll());
+
+        User user = authenticationController.getUserFromSession(request.getSession());
+        model.addAttribute("user", user);
         model.addAttribute("title", "My Jobs");
-    return "index";
-    }
+        model.addAttribute("welcome", "Welcome " + user.getUsername());
+
+        model.addAttribute("myJobs",user.getMySavedJobs());
+
+            return "index";
+        }
+
+//        if (user.getMySavedJobs().isEmpty()) {
+//            model.addAttribute("none", "You have no saved jobs.");
+//        }
+//        model.addAttribute("mySavedJobs", user.getMySavedJobs());
+//        model.addAttribute("title", "My Jobs");
+//    return "index";
+//    }
 
     @GetMapping("add")
     public String displayAddJobForm(Model model) {
@@ -60,7 +88,6 @@ public class HomeController {
             return "add";
         }
 
-
        Optional result = employerRepository.findById(employerId);
         if (result.isPresent()) {
 
@@ -75,7 +102,13 @@ public class HomeController {
 
     @GetMapping("view/{jobId}")
     public String displayViewJob(Model model, @PathVariable int jobId) {
+         Optional<Job> result = jobRepository.findById(jobId);
 
+         if (result.isPresent()) {
+             Job job = result.get();
+
+             model.addAttribute("job", job);
+         }
         return "view";
     }
 

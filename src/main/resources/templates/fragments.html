@@ -23,10 +23,22 @@
                 <li><a th:href="@{/list}">List</a></li>
                 <li><a th:href="@{/search}">Search</a></li>
                 <li><a th:href="@{/add}">Add Jobs</a></li>
+                <li><a th:href="@{/logout}">Logout</a></li>
             </ul>
         </div>
     </div>
 </div>
+
+<div th:fragment="save-job">
+    <form method="post">
+    <div class="form-group">
+        <label th:for="mySavedJobs">Save Job</label>
+        <p>
+            <input type="checkbox" name="jobId" th:value="${job.id}">
+            <label th:text="${job.name}"></label>
+        </p>
+        <input class="btn-btn" type="submit" value="Save" />
+    </form>
 
 </body>
 </html>
