@@ -4,6 +4,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import java.util.List;
 public class User extends AbstractEntity {
 
     @ManyToMany
-    @JoinColumn(name = "user_id")
+    @JoinTable(name="user_job", joinColumns = @JoinColumn(name="user_id"), inverseJoinColumns=@JoinColumn(name="job_id"))
     private final List<Job> mySavedJobs = new ArrayList<>();
 
     @NotNull

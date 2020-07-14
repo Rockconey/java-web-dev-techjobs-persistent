@@ -30,7 +30,7 @@
 </div>
 
 <div th:fragment="save-job">
-    <form method="post">
+    <form action="/user/save" method="post">
     <div class="form-group">
         <label th:for="mySavedJobs">Save Job</label>
         <p>
@@ -39,6 +39,15 @@
         </p>
         <input class="btn-btn" type="submit" value="Save" />
     </form>
-
+    <form action="/user/delete" method="post">
+        <div class="form-group">
+            <label th:for="mySavedJobs">Delete Job</label>
+            <p>
+                <input type="checkbox" name="jobId" th:value="${job.id}">
+                <label th:text="${job.name}"></label>
+            </p>
+            <input class="btn-btn" type="submit" value="Delete" />
+    </form>
+</div>
 </body>
 </html>

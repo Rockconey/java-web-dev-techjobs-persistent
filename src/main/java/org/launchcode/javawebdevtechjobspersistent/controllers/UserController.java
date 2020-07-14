@@ -3,6 +3,7 @@ package org.launchcode.javawebdevtechjobspersistent.controllers;
 import org.launchcode.javawebdevtechjobspersistent.models.Job;
 import org.launchcode.javawebdevtechjobspersistent.models.User;
 import org.launchcode.javawebdevtechjobspersistent.models.data.JobRepository;
+import org.launchcode.javawebdevtechjobspersistent.models.data.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +22,10 @@ public class UserController {
     @Autowired
     JobRepository jobRepository;
 
-    @GetMapping("user")
+    @Autowired
+    UserRepository userRepository;
+
+    @GetMapping("")
     public String displayUserPage(Model model, HttpServletRequest request) {
         User user = authenticationController.getUserFromSession(request.getSession());
         model.addAttribute("title", user.getUsername());
@@ -31,16 +35,20 @@ public class UserController {
         return "user";
     }
 
-    @RequestMapping("/save")
+    @PostMapping("save")
     public String saveJob(Model model, @RequestParam int jobId, HttpServletRequest request) {
         User user = authenticationController.getUserFromSession(request.getSession());
+
 
         Optional<Job> result =jobRepository.findById(jobId);
 
         if ( result.isPresent()) {
             Job job = result.get();
-            user.setMySavedJobs(job);
+            if (!user.getMySavedJobs().contains(job))
+                user.setMySavedJobs(job);
+                userRepository.save(user);
+            return "redirect:/";
         }
-        return "list-jobs";
+        return "user/save";
     }
 }

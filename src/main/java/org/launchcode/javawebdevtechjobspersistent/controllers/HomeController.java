@@ -53,18 +53,11 @@ public class HomeController {
         model.addAttribute("title", "My Jobs");
         model.addAttribute("welcome", "Welcome " + user.getUsername());
 
-        model.addAttribute("myJobs",user.getMySavedJobs());
+        model.addAttribute("myJobs", user.getMySavedJobs());
 
             return "index";
         }
 
-//        if (user.getMySavedJobs().isEmpty()) {
-//            model.addAttribute("none", "You have no saved jobs.");
-//        }
-//        model.addAttribute("mySavedJobs", user.getMySavedJobs());
-//        model.addAttribute("title", "My Jobs");
-//    return "index";
-//    }
 
     @GetMapping("add")
     public String displayAddJobForm(Model model) {
@@ -100,7 +93,7 @@ public class HomeController {
         return "redirect:";
     }
 
-    @GetMapping("view/{jobId}")
+    @RequestMapping(value = "view/{jobId}", method = {RequestMethod.GET, RequestMethod.POST})
     public String displayViewJob(Model model, @PathVariable int jobId) {
          Optional<Job> result = jobRepository.findById(jobId);
 
